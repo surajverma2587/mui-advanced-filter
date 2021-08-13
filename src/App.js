@@ -10,6 +10,10 @@ import Box from "@material-ui/core/Box";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormLabel from "@material-ui/core/FormLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+
+import { Country, City } from "country-state-city";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -17,6 +21,11 @@ const App = () => {
   const [apartments, setApartments] = useState(false);
   const [hostels, setHostels] = useState(false);
   const [gender, setGender] = useState("female");
+  const [countries] = useState(Country.getAllCountries());
+  const [cities, setCities] = useState();
+  const [selectedCountryISO, setSelectedCountryISO] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -26,6 +35,9 @@ const App = () => {
       hotels,
       apartments,
       hostels,
+      selectedCountry,
+      selectedCountryISO,
+      selectedCity,
     });
   };
 
@@ -47,6 +59,16 @@ const App = () => {
 
   const handleChangeGender = (event) => {
     setGender(event.target.value);
+  };
+
+  const handleChangeCountry = (event) => {
+    setSelectedCountryISO(event.target.value);
+    setSelectedCountry(event.currentTarget.getAttribute("name"));
+    setCities(City.getCitiesOfCountry(event.target.value));
+  };
+
+  const handleChangeCity = (event) => {
+    setSelectedCity(event.target.value);
   };
 
   return (
@@ -110,6 +132,40 @@ const App = () => {
           </RadioGroup>
         </FormControl>
       </Box>
+      <Box component="div" m={1}>
+        <FormControl style={{ minWidth: "200px" }}>
+          <InputLabel>Country</InputLabel>
+          <Select value={selectedCountryISO} onChange={handleChangeCountry}>
+            {countries.map((country) => {
+              return (
+                <MenuItem
+                  name={country.name}
+                  value={country.isoCode}
+                  key={country.isoCode}
+                >
+                  {country.name}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+      </Box>
+      {cities && (
+        <Box component="div" m={1}>
+          <FormControl style={{ minWidth: "200px" }}>
+            <InputLabel>City</InputLabel>
+            <Select value={selectedCity} onChange={handleChangeCity}>
+              {cities.map((city, index) => {
+                return (
+                  <MenuItem value={city.name} key={`${city.name}-${index}`}>
+                    {city.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        </Box>
+      )}
       <Box component="div" m={1}>
         <Button variant="contained" color="primary" type="submit">
           Hello World
