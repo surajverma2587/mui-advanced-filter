@@ -38,7 +38,7 @@ const ImageUpload = () => {
 
   const onUpload = async () => {
     const file = images[0].file;
-    const fileName = file.name;
+    const fileName = `bobsmith/images/profile/${file.name}`;
 
     const config = {
       bucketName: process.env.REACT_APP_BUCKET_NAME,
