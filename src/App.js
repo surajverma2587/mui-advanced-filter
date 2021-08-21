@@ -14,6 +14,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 
 import { Country, City } from "country-state-city";
+import ImageUpload from "./ImageUpload";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -166,6 +167,9 @@ const App = () => {
           </FormControl>
         </Box>
       )}
+      <Box component="div" m={1}>
+        <ImageUpload />
+      </Box>
       <Box component="div" m={1}>
         <Button variant="contained" color="primary" type="submit">
           Hello World
